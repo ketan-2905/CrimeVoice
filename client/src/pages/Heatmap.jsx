@@ -14,7 +14,6 @@ export default function Heatmap() {
           row["Year"] && row["Total"] && !isNaN(parseInt(row["Total"]))
         );
 
-        // Group totals by year
         const yearMap = {};
         rows.forEach(row => {
           const year = row["Year"].trim();
@@ -34,16 +33,18 @@ export default function Heatmap() {
   }, []);
 
   return (
-    <div style={{ padding: '20px', minHeight: '100vh', backgroundColor: '#1f2937', color: 'white' }}>
-      <h1 style={{ textAlign: 'center' }}>Crime Heatmap & Statistics</h1>
-      <div style={{ border: '1px solid #4b5563', padding: '20px', borderRadius: '8px', height: '450px' }}>
+    <div className="min-h-screen bg-gray-900 text-white p-8">
+      <h1 className="text-4xl font-bold text-center mb-8">Crime Heatmap & Statistics</h1>
+      <div className="border border-gray-600 p-8 rounded-xl h-[450px] bg-gray-800 shadow-xl">
         {graphData ? (
           <CrimeGraphMultiYear data={graphData} district="All Districts" />
         ) : (
-          <p>Loading chart...</p>
+          <div className="flex items-center justify-center h-full">
+            <div className="animate-pulse text-xl text-gray-400">Loading chart...</div>
+          </div>
         )}
       </div>
-      <p style={{ textAlign: 'center', marginTop: '20px' }}>
+      <p className="text-center mt-6 text-gray-400 hover:text-gray-300 transition-colors">
         If nothing appears, check browser console (F12) for errors
       </p>
     </div>

@@ -20,9 +20,32 @@ model User {
   password  String
   role      Role     @default(USER)
   createdAt DateTime @default(now())
+  reports   Report[] // Relation to reports
+}
+
+model Report {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  location    String
+  crimeType   String
+  date        DateTime @default(now())
+  status      Status   @default(PENDING)
+  anonymous   Boolean  @default(false)
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum Role {
   USER
   ADMIN // aka Police/Verifier
+}
+
+enum Status {
+  PENDING
+  INVESTIGATING
+  RESOLVED
+  DISMISSED
 }

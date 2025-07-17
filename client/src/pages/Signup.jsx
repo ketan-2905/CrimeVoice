@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import apiClient from '../apiClient'; // ✅ Reuse Axios instance
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -20,6 +22,8 @@ export default function Signup() {
     try {
       const res = await apiClient.post('/auth/register', formData);
       setSubmitted(true);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      navigate('/login');
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.error || 'Registration failed');
@@ -80,6 +84,13 @@ export default function Signup() {
               >
                 Sign Up
               </button>
+
+              <p className="text-center mt-4">
+                Already have an account?{' '}
+                <Link to="/login" className="text-blue-600 hover:underline">
+                  Login
+                  </Link>
+              </p>
 
               {error && <p className="text-red-600 text-sm mt-2 text-center">{error}</p>}
             </form>
